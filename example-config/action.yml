@@ -1,0 +1,38 @@
+---
+actions:
+  1:
+    action: delete_indices
+    description: >-
+      Delete indices older than 10 days (based on index name)
+    options:
+      ignore_empty_list: True
+      disable_action: False
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: index-*
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: '%Y.%m.%d'
+      unit: days
+      unit_count: 10
+  2:
+    action: delete_indices
+    description: >-
+      Delete indices more than 1 Gb
+    options:
+      ignore_empty_list: True
+      disable_action: False
+    filters:
+    - filtertype: pattern
+      kind: prefix
+      value: index-*
+    - filtertype: space
+      disk_space: 1
+      use_age: True
+      source: creation_date
+      timestring:
+      field:
+      stats_result:
+      exclude:
